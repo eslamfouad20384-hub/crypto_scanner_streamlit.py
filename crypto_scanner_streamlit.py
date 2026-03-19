@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import requests
 import time
 
@@ -12,6 +11,7 @@ st.title("Crypto Scanner بالعربي 🔍 - نسخة Cloud Ready")
 # ==============================
 MIN_LIQUIDITY = 5_000_000
 RSI_THRESHOLD = 30
+OHLC_LIMIT = 200  # عدد الشموع لجلب OHLC
 
 # ==============================
 # جلب قائمة العملات من CoinGecko
@@ -35,7 +35,7 @@ def fetch_market_list():
 # ==============================
 def fetch_ohlc(symbol):
     url = f"https://min-api.cryptocompare.com/data/v2/histohour"
-    params = {"fsym": symbol.upper(), "tsym": "USDT", "limit": 200}
+    params = {"fsym": symbol.upper(), "tsym": "USDT", "limit": OHLC_LIMIT}
     try:
         r = requests.get(url, params=params).json()
         df = pd.DataFrame(r["Data"]["Data"])
